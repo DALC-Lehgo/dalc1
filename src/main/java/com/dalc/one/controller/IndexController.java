@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dalc.one.domain.User;
-import com.dalc.one.service.Facade;
+import com.dalc.one.service.LehgoFacade;
 
 
 @Controller
 public class IndexController {
-	private Facade facade;
+	private LehgoFacade lehgo;
 	
 	@Autowired
-	public void setFacade(Facade facade) {
-		this.facade = facade;
+	public void setFacade(LehgoFacade lehgo) {
+		this.lehgo = lehgo;
 	}
 	
 	@RequestMapping("/")
@@ -32,7 +32,7 @@ public class IndexController {
 	@ResponseBody
 	@RequestMapping("/user")
 	public String indexData(ModelMap model) {  
-		List<User> userList = facade.getUserList();
+		List<User> userList = lehgo.getUserList();
 		JSONObject vo = new JSONObject();
 		JSONArray va = new JSONArray();
 		for (User user : userList) {

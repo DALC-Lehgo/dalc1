@@ -5,7 +5,7 @@ import org.springframework.dao.DataAccessException;
 import com.dalc.one.domain.User;
 
 
-public interface Facade {
+public interface LehgoFacade {
 
 	//USER
 	List<User> getUserList() throws DataAccessException;

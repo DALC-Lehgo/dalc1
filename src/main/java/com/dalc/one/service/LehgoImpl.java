@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dalc.one.dao.UserDAO;
 import com.dalc.one.domain.User;
-import com.dalc.one.service.Facade;
+import com.dalc.one.service.LehgoFacade;
 
 @Service
 @Transactional
-public class Impl implements Facade{
+public class LehgoImpl implements LehgoFacade{
 
 	@Autowired
 	private UserDAO userDao;
