@@ -7,6 +7,7 @@ import com.dalc.one.domain.User;
 
 public interface UserDAO {
 	
-  List<User> getUserList()  throws DataAccessException;
-  
+	List<User> getUserList()  throws DataAccessException;
+	User findUserbyUserId(String id) throws DataAccessException;
+	void signUp(User user) throws DataAccessException;
 }
