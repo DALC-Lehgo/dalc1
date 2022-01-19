@@ -5,9 +5,20 @@
 	namespace="com.dalc.one.dao.mybatis.mapper.UserMapper">
 	<cache />
 	<select id="getUserList" resultType="User">
-		SELECT 
-		USER_ID as ID,
-		USER_NAME as NAME
+		SELECT *
 		FROM USERINFO
 	</select>
+	
+	<select id="findUserbyUserId" resultType="User">
+		SELECT *
+		FROM USERINFO
+		WHERE USER_ID = #{id}
+	</select>
+	
+	<insert id="signUp" parameterType="User">
+		INSERT INTO USERINFO
+		(USER_ID, USER_NAME, PASSWORD, EMAIL, NICKNAME, GENDER, AGE)
+		VALUES
+		(#{id}, #{name}, #{password}, #{email}, #{nickname}, #{gender}, #{age})
+	</insert>
 </mapper>

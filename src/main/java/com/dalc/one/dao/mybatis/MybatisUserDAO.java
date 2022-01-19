@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.dao.DataAccessException;
 
-
 import com.dalc.one.dao.UserDAO;
 import com.dalc.one.dao.mybatis.mapper.UserMapper;
 import com.dalc.one.domain.User;
@@ -19,7 +18,15 @@ public class MybatisUserDAO implements UserDAO {
 
 	@Override
 	public List<User> getUserList() {
-			//throws com.dwu.alonealong.dao.DataAccessException {
 		return userMapper.getUserList();
+	}
+	
+	@Override
+	public User findUserbyUserId(String id) {
+		return userMapper.findUserbyUserId(id);
+	}
+	@Override
+	public void signUp(User user) {
+		userMapper.signUp(user);
 	}
 }

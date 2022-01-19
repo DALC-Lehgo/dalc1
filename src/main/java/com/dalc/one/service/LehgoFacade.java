@@ -9,5 +9,6 @@ public interface LehgoFacade {
 
 	//USER
 	List<User> getUserList() throws DataAccessException;
-	
+	User findUserbyUserId(String id) throws DataAccessException;
+	void signUp(User user) throws DataAccessException;
 }
