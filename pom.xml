@@ -113,6 +113,13 @@
 		<artifactId>jaxb-api</artifactId>
 		<version>2.3.0-b170201.1204</version>
 		</dependency>
+		
+		<!-- Valid -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>7.0.2.Final</version>
+		</dependency>
 	</dependencies>
 
 	<build>
