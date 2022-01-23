@@ -13,4 +13,10 @@ public interface UserMapper {
 	List<User> getUserList();
 	User findUserbyUserId(String id);
 	void signUp(User user);
+
+	public int checkUserId(String id);
+	public int checkUserEmail(String email);
+	public int checkUserNickname(String nickname);
+	public void updateUserInfo(User user);
+	public void deleteUser(String id);
 }

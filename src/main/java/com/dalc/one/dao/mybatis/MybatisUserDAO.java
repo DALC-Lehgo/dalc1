@@ -29,4 +29,25 @@ public class MybatisUserDAO implements UserDAO {
 	public void signUp(User user) {
 		userMapper.signUp(user);
 	}
+
+	@Override
+	public int checkUserId(String id){
+		return userMapper.checkUserId(id);
+	}
+	@Override
+	public int checkUserEmail(String email){
+		return userMapper.checkUserEmail(email);
+	}
+	@Override
+	public int checkUserNickname(String nickname){
+		return userMapper.checkUserNickname(nickname);
+	}
+	@Override
+	public void updateUserInfo(User user) {
+		userMapper.updateUserInfo(user);
+	}
+	@Override
+	public void deleteUser(String id) {
+		userMapper.deleteUser(id);
+	}
 }
