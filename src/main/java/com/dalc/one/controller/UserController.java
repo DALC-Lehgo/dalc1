@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,6 @@ import com.dalc.one.user.UserDTO;
 import com.dalc.one.jwt.JwtTokenProvider;
 import com.dalc.one.service.LehgoFacade;
 import com.dalc.one.user.UserService;
-import com.dalc.one.user.UserVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,21 +55,39 @@ public class UserController{
 			}
 			else {
 				//비밀번호가 맞지 않는 경우
-				ExceptionEnum exception = ExceptionEnum.LOGIN_FAIL;
-				throw new ResponseStatusException(exception.getStatus(), exception.getMessage());
+				throw new ResponseStatusException
+					(ExceptionEnum.LOGIN_FAIL.getStatus(), ExceptionEnum.LOGIN_FAIL.getMessage());
 			}
 		}
 		catch (NullPointerException e) {
 			//아이디가 존재하지 않는 경우
-			ExceptionEnum exception = ExceptionEnum.LOGIN_FAIL;
-			throw new ResponseStatusException(exception.getStatus(), exception.getMessage());
+			throw new ResponseStatusException
+				(ExceptionEnum.LOGIN_FAIL.getStatus(), ExceptionEnum.LOGIN_FAIL.getMessage());
 		}
 	}
 	
 	@PostMapping("/users/new")
-	public String signUp(@RequestBody User user, HttpServletResponse response) {
-		userService.signUp(user);
-		return "signup";
+	public ResponseEntity signUp(@Valid @RequestBody User user, HttpServletResponse response){
+		//기본적인 형식은 프론트에서 1차적으로 검증
+		try {
+			if (lehgo.checkUserId(user.getId()) > 0) {
+				throw new ResponseStatusException
+					(ExceptionEnum.EXIST_ID.getStatus(), ExceptionEnum.EXIST_ID.getMessage());
+			}
+			if (lehgo.checkUserEmail(user.getEmail()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
+			}
+			if (lehgo.checkUserNickname(user.getNickname()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
+			}
+			userService.signUp(user);
+		} catch(NullPointerException e) {
+			throw new ResponseStatusException
+			(ExceptionEnum.NULL.getStatus(), ExceptionEnum.NULL.getMessage());
+		}
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
 	@GetMapping("users/{id}")
@@ -77,30 +96,74 @@ public class UserController{
 			@PathVariable("id") String userId) throws IOException {
 		String authorizationHeader = request.getHeader("authorization");
 		if (authorizationHeader == null) {
-			//리다이렉트
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
 		}
 		else if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(userId)) {
-			ExceptionEnum e = ExceptionEnum.NOT_MATCH;
-			throw new ResponseStatusException(e.getStatus(), e.getMessage());
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_MATCH.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
 		}
 		User user = lehgo.findUserbyUserId(JwtTokenProvider.getUserOf(authorizationHeader).getUsername());
 		return ResponseEntity.ok(user);
 	}
 	
 	@PostMapping("users/{id}")
-	public ResponseEntity<User> editUserInfo(HttpServletRequest request,
-			@RequestBody User user,
+	public ResponseEntity updateUserInfo(HttpServletRequest request,
+			@RequestBody User newUserInfo,
 			@PathVariable("id") String userId) {
+		
+		//수정 요청 ID와 로그인 ID의 일치 여부 확인
 		String authorizationHeader = request.getHeader("authorization");
-		if (authorizationHeader != null && 
-				JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(user.getId())) {
-			//비밀번호가 일치하면...
-			//이메일 유효성 검사
-			//닉네임 유효성 검사
-			
-			return ResponseEntity.ok(user);
+		if (authorizationHeader == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
 		}
-		return null;
+		if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(userId)) {
+			ExceptionEnum e = ExceptionEnum.NOT_MATCH;
+			throw new ResponseStatusException(e.getStatus(), e.getMessage());
+		}
+
+		User pastUserInfo = lehgo.findUserbyUserId(JwtTokenProvider.getUserOf(authorizationHeader).getUsername());
+		try {
+			if (!pastUserInfo.getEmail().equals(newUserInfo.getEmail()) &&
+					lehgo.checkUserEmail(newUserInfo.getEmail()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
+			}
+			if (!pastUserInfo.getNickname().equals(newUserInfo.getNickname()) &&
+					lehgo.checkUserNickname(newUserInfo.getNickname()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
+			}
+			lehgo.updateUserInfo(newUserInfo);
+		} catch(NullPointerException e) {
+			throw new ResponseStatusException
+			(ExceptionEnum.NULL.getStatus(), ExceptionEnum.NULL.getMessage());
+		}
+		return ResponseEntity.ok(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("users/{id}")
+	public ResponseEntity deleteUser(HttpServletRequest request,
+			@PathVariable("id") String userId) {
+		//탈퇴 요청 ID와 로그인 ID의 일치 여부 확인
+		String authorizationHeader = request.getHeader("authorization");
+		if (authorizationHeader == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(userId)) {
+			ExceptionEnum e = ExceptionEnum.NOT_MATCH;
+			throw new ResponseStatusException(e.getStatus(), e.getMessage());
+		}
+
+		try {
+			lehgo.deleteUser(userId);
+		} catch(DataAccessException e) {
+			throw new ResponseStatusException
+			(ExceptionEnum.NOT_DATA_ACCESS.getStatus(), ExceptionEnum.NOT_DATA_ACCESS.getMessage());
+		}
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
 //	@GetMapping("/checkUser")

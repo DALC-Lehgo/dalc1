@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,7 +41,7 @@ public class IndexController {
 
 	//adminTest
 	@ResponseBody
-	@RequestMapping("/admin/user") 
+	@GetMapping("/admin/user") 
 	public ResponseEntity<Map<String, Object>> indexData(ModelMap model) {
 		List<User> userList = lehgo.getUserList();
 		
