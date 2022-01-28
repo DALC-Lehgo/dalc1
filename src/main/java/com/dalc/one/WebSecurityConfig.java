@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 //		.antMatchers('/인증 권한이 필요한 페이지').authenticated()
 		.antMatchers("/login").permitAll()
+		.antMatchers("/exists/**").permitAll() //중복 여부 검사
 		.antMatchers("/checkUser").hasRole("USER")
 		.antMatchers("/admin/**").hasRole("ADMIN")
 		.anyRequest().permitAll()
