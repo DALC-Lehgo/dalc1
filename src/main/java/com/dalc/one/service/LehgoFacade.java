@@ -1,8 +1,15 @@
 package com.dalc.one.service;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.dao.DataAccessException;
+
+import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserLikePlace;
+import com.dalc.one.domain.UserSearchPlace;
 
 
 public interface LehgoFacade {
@@ -11,4 +18,26 @@ public interface LehgoFacade {
 	List<User> getUserList() throws DataAccessException;
 	User findUserbyUserId(String id) throws DataAccessException;
 	void signUp(User user) throws DataAccessException;
+	String findUserID(String email) throws DataAccessException;
+	User findUser(String id, String email) throws DataAccessException;
+	int checkUserEmail(String email);
+	int checkUserNickname(String nickname);
+	void updateUserInfo(User newUserInfo);
+	void deleteUser(String userId);
+	void resetPw(User user);
+	
+	
+	//Place
+	List<Place> getPlaceListbyName (String name) throws DataAccessException;
+	List<Place> getPlaceListbyCategory (String category) throws DataAccessException;
+	List<Place> getPlaceListbyArea(String area) throws DataAccessException;
+	List<Place> getPlaceListbyContent(String content) throws DataAccessException;
+	//Place-리스트
+	UserLikePlace addUserplace(User user, int id) throws DataAccessException;
+	int deleteUserPlace(@Valid User user, int id) throws DataAccessException;
+	List<UserLikePlace> getUserPlaceList(@Valid User user)throws DataAccessException;
+	//Place-visited
+	List<UserSearchPlace> getUserVisitedList(@Valid User user)throws DataAccessException;
+	UserSearchPlace addUserVisitedPlace(@Valid User user, int id);
+	int deleteUserVisitedPlace(@Valid User user, int id);
 }

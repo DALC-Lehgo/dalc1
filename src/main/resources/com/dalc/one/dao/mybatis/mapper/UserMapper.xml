@@ -3,6 +3,18 @@
 
 <mapper
 	namespace="com.dalc.one.dao.mybatis.mapper.UserMapper">
+	<resultMap type="User" id="userSelectRM">
+		<result property="id" column="USER_ID"/>
+		<result property="name" column="USER_NAME"/>
+		<result property="password" column="password"/>
+		<result property="email" column="email"/>
+		<result property="nickname" column="nickname"/>
+		<result property="gender" column="gender"/>
+		<result property="age" column="age"/>
+		<result property="platform" column="platform"/>
+		<result property="token" column="token"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
 	<cache />
 	<select id="getUserList" resultType="User">
 		SELECT *
@@ -15,16 +27,37 @@
 		WHERE USER_ID = #{id} AND ACTIVE = 1
 	</select>
 	
+	<select id="findIdbyEmail" resultType="String">
+		SELECT USER_ID
+		FROM USERINFO
+		WHERE EMAIL = #{email} AND ACTIVE = 1
+	</select>
+	
+	
+	<select id="findUserbyIdAndEmail" resultType="User" resultMap="userSelectRM">
+		SELECT *
+		FROM USERINFO
+		WHERE USER_ID = #{id} AND email = #{email} AND ACTIVE = 1
+	</select>
+	
+	<update id="resetPassword">
+		update USERINFO
+			set password = #{password}
+		where USER_ID = #{id}
+	</update>
+	
 	<select id="checkUserId" resultType="int">
 		SELECT COUNT(USER_ID)
 		FROM USERINFO
 		WHERE USER_ID = #{id}
 	</select>
+	
 	<select id="checkUserEmail" resultType="int">
 		SELECT COUNT(USER_ID)
 		FROM USERINFO
 		WHERE EMAIL = #{email} AND ACTIVE = 1
 	</select>
+	
 	<select id="checkUserNickname" resultType="int">
 		SELECT COUNT(USER_ID)
 		FROM USERINFO

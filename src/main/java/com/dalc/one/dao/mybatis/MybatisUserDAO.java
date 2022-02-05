@@ -50,4 +50,21 @@ public class MybatisUserDAO implements UserDAO {
 	public void deleteUser(String id) {
 		userMapper.deleteUser(id);
 	}
+
+	@Override
+	public String findIdbyEmail(String email) throws DataAccessException {
+		return userMapper.findIdbyEmail(email);
+	}
+
+	@Override
+	public User findUserbyIdAndEmail(String id, String email) throws DataAccessException {
+		return userMapper.findUserbyIdAndEmail(id, email);
+	}
+
+	@Override
+	public void resetPw(String password, String id) throws DataAccessException {
+		userMapper.resetPassword(password, id);
+	}
+	
+	
 }

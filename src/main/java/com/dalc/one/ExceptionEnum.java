@@ -29,4 +29,5 @@ public enum ExceptionEnum {
         this.status = status;
         this.message = message;
     }
+
 }

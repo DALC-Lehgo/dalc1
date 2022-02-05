@@ -1,19 +1,20 @@
 package com.dalc.one.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO{
 	private String id;
 	private String password;
 	
-	@Builder
-	public UserDTO(String id, String password) {
-		this.id = id;
-		this.password = password;
-	}
+
+	
 	/* JavaBeans Properties */
 }

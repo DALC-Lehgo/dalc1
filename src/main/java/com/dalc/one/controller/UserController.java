@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dalc.one.ExceptionEnum;
@@ -44,6 +47,8 @@ public class UserController{
 		this.lehgo = lehgo;
 	}
 	
+	
+	// 로그인
 	@PostMapping("/user")
 	public ResponseEntity<String> login(@Valid @RequestBody UserDTO user, 
 			HttpServletResponse response) throws IOException {
@@ -66,22 +71,23 @@ public class UserController{
 		}
 	}
 	
+	// 회원가입
 	@PostMapping("/users/new")
 	public ResponseEntity signUp(@Valid @RequestBody User user, HttpServletResponse response){
 		//기본적인 형식은 프론트에서 1차적으로 검증
 		try {
-			if (lehgo.checkUserId(user.getId()) > 0) {
-				throw new ResponseStatusException
-					(ExceptionEnum.EXIST_ID.getStatus(), ExceptionEnum.EXIST_ID.getMessage());
-			}
-			if (lehgo.checkUserEmail(user.getEmail()) > 0) {
-				throw new ResponseStatusException
-				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
-			}
-			if (lehgo.checkUserNickname(user.getNickname()) > 0) {
-				throw new ResponseStatusException
-				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
-			}
+//			if (lehgo.checkUserId(user.getId()) > 0) {
+//				throw new ResponseStatusException
+//					(ExceptionEnum.EXIST_ID.getStatus(), ExceptionEnum.EXIST_ID.getMessage());
+//			}
+//			if (lehgo.checkUserEmail(user.getEmail()) > 0) {
+//				throw new ResponseStatusException
+//				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
+//			}
+//			if (lehgo.checkUserNickname(user.getNickname()) > 0) {
+//				throw new ResponseStatusException
+//				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
+//			}
 			userService.signUp(user);
 		} catch(NullPointerException e) {
 			throw new ResponseStatusException
@@ -90,6 +96,7 @@ public class UserController{
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
+	// 유저 정보 GET
 	@GetMapping("users/{id}")
 	public ResponseEntity<User> getUserInfo(HttpServletRequest request,
 			HttpServletResponse response,
@@ -107,10 +114,54 @@ public class UserController{
 		return ResponseEntity.ok(user);
 	}
 	
-	@PostMapping("users/{id}")
+	// 아이디 찾기
+	@ResponseBody
+	@GetMapping("users/findid/{email}")
+	public ResponseEntity<String> findUserId(@PathVariable("email") String email) throws Exception {
+		String userId = lehgo.findUserID(email);
+		
+		if (userId == null)
+			throw new Exception("userId not found");
+				
+		return ResponseEntity.ok(userId);
+	}
+	
+	
+	// 비밀번호 찾기
+	@ResponseBody
+	@GetMapping("users/findpw")
+	public ResponseEntity<User> findUserPw(@RequestParam(value = "id") String id,
+			@RequestParam(value = "email") String email) throws Exception {
+
+		User user = lehgo.findUser(id, email);
+		if (user == null)  {
+			throw new ResponseStatusException
+			(ExceptionEnum.NO_USER.getStatus(), ExceptionEnum.NO_USER.getMessage());
+		}
+
+		return ResponseEntity.ok(user);
+	}
+	
+	//비밀번호 재설정
+	@ResponseBody
+	@PutMapping("users/resetpw")
+	public ResponseEntity<HttpStatus> resetPw(@Valid @RequestBody User user, @RequestParam(value = "pw") String pw, 
+			HttpServletResponse response) throws Exception {
+		user.setPassword(pw);
+		try {
+			userService.resetPw(user);
+		} catch(NullPointerException e) {
+			throw new ResponseStatusException
+			(ExceptionEnum.NULL.getStatus(), ExceptionEnum.NULL.getMessage());
+		}
+		return ResponseEntity.ok(HttpStatus.OK);
+	}
+	
+	// 유저 정보 수정
+	@PostMapping("users")
 	public ResponseEntity updateUserInfo(HttpServletRequest request,
 			@RequestBody User newUserInfo,
-			@PathVariable("id") String userId) {
+			@RequestParam(value = "id") String userId) {
 		
 		//수정 요청 ID와 로그인 ID의 일치 여부 확인
 		String authorizationHeader = request.getHeader("authorization");
@@ -143,6 +194,7 @@ public class UserController{
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
+	// 유저 탈퇴
 	@DeleteMapping("users/{id}")
 	public ResponseEntity deleteUser(HttpServletRequest request,
 			@PathVariable("id") String userId) {
