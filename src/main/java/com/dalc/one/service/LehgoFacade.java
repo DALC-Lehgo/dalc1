@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.dao.DataAccessException;
 
+import com.dalc.one.domain.Folder;
+import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;
@@ -37,7 +39,17 @@ public interface LehgoFacade {
 	int deleteUserPlace(@Valid User user, int id) throws DataAccessException;
 	List<UserLikePlace> getUserPlaceList(@Valid User user)throws DataAccessException;
 	//Place-visited
-	List<UserSearchPlace> getUserVisitedList(@Valid User user)throws DataAccessException;
-	UserSearchPlace addUserVisitedPlace(@Valid User user, int id);
-	int deleteUserVisitedPlace(@Valid User user, int id);
+	List<UserSearchPlace> getUserVisitedList(@Valid User user) throws DataAccessException;
+	UserSearchPlace addUserVisitedPlace(@Valid User user, int id) throws DataAccessException;
+	int deleteUserVisitedPlace(@Valid User user, int id) throws DataAccessException;
+	
+	/* Folder */
+	Folder addFolder(@Valid User user, String folder) throws DataAccessException;
+	int deleteFolder(@Valid User user, int id);
+	List<Folder> getFolderList(String userId);
+	Folder getFolder(int id);
+	FolderPlace addFolderPlace(int folderId, int placeId);
+	List<FolderPlace> getFolderPlaceList(int folderId);
+	int deleteFolderPlace(int folderId, int placeId);
+	
 }

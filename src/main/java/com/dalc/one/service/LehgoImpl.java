@@ -14,6 +14,10 @@ import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
+import com.dalc.one.domain.Folder;
+import com.dalc.one.domain.FolderPlace;
+import com.dalc.one.repository.FolderPlaceRepository;
+import com.dalc.one.repository.FolderRepository;
 import com.dalc.one.repository.PlaceRepository;
 import com.dalc.one.repository.UserLikePlaceRepository;
 import com.dalc.one.repository.UserSearchRepository;
@@ -34,6 +38,13 @@ public class LehgoImpl implements LehgoFacade{
 	
 	@Autowired
 	private UserSearchRepository usRepo;
+	
+	@Autowired
+	private FolderRepository folderRepo;
+	
+	@Autowired
+	private FolderPlaceRepository fpRepo;
+	
 	
 	public List<User> getUserList(){
 		return userDao.getUserList();
@@ -133,4 +144,45 @@ public class LehgoImpl implements LehgoFacade{
 	public int deleteUserVisitedPlace(@Valid User user, int id) {
 		return usRepo.deleteByUserIdAndPlaceId(user.getId(), id);
 	}
+
+	
+	/* Folder */
+	@Override
+	public Folder addFolder(@Valid User user, String name) throws DataAccessException {
+		Folder entity = new Folder();
+		entity.setFolderName(name);
+		entity.setUserId(user.getId());
+		return folderRepo.save(entity);
+	}
+	@Override
+	public int deleteFolder(@Valid User user, int id) {
+		return folderRepo.deleteByUserIdAndFolderId(user.getId(), id);
+	}
+	@Override
+	public List<Folder> getFolderList(String userId) {
+		return folderRepo.findByUserId(userId);
+	}
+	@Override
+	public Folder getFolder(int id) {
+		return folderRepo.findByFolderId(id);
+	}
+	
+	/* FolderPlace */
+	@Override
+	public FolderPlace addFolderPlace(int folderId, int placeId) {
+		FolderPlace entity = new FolderPlace();
+		entity.setFolderId(folderId);
+		entity.setPlaceId(placeId);
+		
+		return fpRepo.save(entity);
+	}
+	@Override
+	public List<FolderPlace> getFolderPlaceList(int folderId) {
+		return fpRepo.findByFolderId(folderId);
+	}
+	@Override
+	public int deleteFolderPlace(int folderId, int placeId) {
+		return fpRepo.deleteByFolderIdAndPlaceId(folderId, placeId);
+	}
+
 }
