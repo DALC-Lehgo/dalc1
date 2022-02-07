@@ -30,6 +30,7 @@ public interface LehgoFacade {
 	
 	
 	//Place
+	Place getPlace(int id);
 	List<Place> getPlaceListbyName (String name) throws DataAccessException;
 	List<Place> getPlaceListbyCategory (String category) throws DataAccessException;
 	List<Place> getPlaceListbyArea(String area) throws DataAccessException;
