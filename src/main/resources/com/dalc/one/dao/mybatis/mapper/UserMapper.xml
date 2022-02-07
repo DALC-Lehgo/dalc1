@@ -16,12 +16,12 @@
 		<result property="auth" column="auth"/>
 	</resultMap>
 	<cache />
-	<select id="getUserList" resultType="User">
+	<select id="getUserList" resultType="User" resultMap="userSelectRM">
 		SELECT *
 		FROM USERINFO WHERE ACTIVE = 1
 	</select>
 	
-	<select id="findUserbyUserId" resultType="User">
+	<select id="findUserbyUserId" resultType="User" resultMap="userSelectRM">
 		SELECT *
 		FROM USERINFO
 		WHERE USER_ID = #{id} AND ACTIVE = 1

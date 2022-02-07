@@ -114,6 +114,19 @@ public class UserController{
 		return ResponseEntity.ok(user);
 	}
 	
+	@PostMapping("exists/id/{id}")
+	public ResponseEntity<Integer> checkUserId(@PathVariable("id") String userId, HttpServletResponse response){
+		return ResponseEntity.ok(lehgo.checkUserId(userId));
+	}
+	@PostMapping("exists/nickname/{nickname}")
+	public ResponseEntity<Integer> checkUserNickname(@PathVariable("nickname") String nickname, HttpServletResponse response){
+		return ResponseEntity.ok(lehgo.checkUserNickname(nickname));
+	}
+	@PostMapping("exists/email/{email}")
+	public ResponseEntity<Integer> checkUserEmail(@PathVariable("email") String email, HttpServletResponse response){
+		return ResponseEntity.ok(lehgo.checkUserEmail(email));
+	}
+	
 	// 아이디 찾기
 	@ResponseBody
 	@GetMapping("users/findid/{email}")

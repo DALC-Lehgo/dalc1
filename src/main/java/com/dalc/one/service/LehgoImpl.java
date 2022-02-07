@@ -62,7 +62,7 @@ public class LehgoImpl implements LehgoFacade{
 	public User findUser(String id, String email) {
 		return userDao.findUserbyIdAndEmail(id, email);
 	}
-		public int checkUserId(String id){
+	public int checkUserId(String id){
 		return userDao.checkUserId(id);
 	}
 	public int checkUserEmail(String email){
