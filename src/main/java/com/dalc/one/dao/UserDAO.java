@@ -9,6 +9,7 @@ public interface UserDAO {
 	
 	List<User> getUserList()  throws DataAccessException;
 	User findUserbyUserId(String id) throws DataAccessException;
+	String findIdbyEmail(String email) throws DataAccessException;
 	void signUp(User user) throws DataAccessException;
 
 	public int checkUserId(String id) throws DataAccessException;
@@ -16,4 +17,6 @@ public interface UserDAO {
 	public int checkUserNickname(String nickname) throws DataAccessException;
 	public void updateUserInfo(User user) throws DataAccessException;
 	public void deleteUser(String id) throws DataAccessException;
+	public User findUserbyIdAndEmail(String id, String email)throws DataAccessException;
+	public void resetPw(String password, String id)throws DataAccessException;
 }

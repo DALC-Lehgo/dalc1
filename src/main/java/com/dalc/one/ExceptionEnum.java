@@ -20,8 +20,10 @@ public enum ExceptionEnum {
 	NULL(HttpStatus.BAD_REQUEST, "입력되지 않은 정보가 있습니다."),
 	//인증
 	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."), 
-	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다.");
-
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
+	//
+	INPUT_FAIL(HttpStatus.CONFLICT, "입력 실패.");
+	
     private final HttpStatus status;
     private String message;
 
@@ -29,4 +31,5 @@ public enum ExceptionEnum {
         this.status = status;
         this.message = message;
     }
+
 }

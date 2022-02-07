@@ -14,13 +14,20 @@ import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.dalc.one.user.UserDTO;
+
 import io.jsonwebtoken.Claims;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("serial")
 public class User implements Serializable {
     @NotBlank
@@ -56,4 +63,5 @@ public class User implements Serializable {
 				+ ", auth=" + auth + "]";
 	}
 	/* JavaBeans Properties */
+
 }

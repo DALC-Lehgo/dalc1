@@ -39,6 +39,13 @@ public class UserService implements UserDetailsService{
 		lehgo.signUp(user);
 	}
 	
+	public void resetPw(User user) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode(user.getPassword()));
+		
+		lehgo.resetPw(user);
+	}
+	
 	public boolean checkPassword(UserDTO user) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(user.getPassword(), lehgo.findUserbyUserId(user.getId()).getPassword());

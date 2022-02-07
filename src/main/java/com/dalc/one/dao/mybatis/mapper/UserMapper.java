@@ -12,6 +12,7 @@ import com.dalc.one.domain.User;
 public interface UserMapper {
 	List<User> getUserList();
 	User findUserbyUserId(String id);
+	String findIdbyEmail(String email);
 	void signUp(User user);
 
 	public int checkUserId(String id);
@@ -19,4 +20,6 @@ public interface UserMapper {
 	public int checkUserNickname(String nickname);
 	public void updateUserInfo(User user);
 	public void deleteUser(String id);
+	public User findUserbyIdAndEmail(String id, String email);
+	public void resetPassword(String password, String id);
 }
