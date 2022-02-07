@@ -62,15 +62,14 @@ public class LehgoImpl implements LehgoFacade{
 	public User findUser(String id, String email) {
 		return userDao.findUserbyIdAndEmail(id, email);
 	}
-	@Override
-	public int checkUserEmail(String email) {
-		// TODO Auto-generated method stub
-		return 0;
+		public int checkUserId(String id){
+		return userDao.checkUserId(id);
 	}
-	@Override
-	public int checkUserNickname(String nickname) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int checkUserEmail(String email){
+		return userDao.checkUserEmail(email);
+	}
+	public int checkUserNickname(String nickname){
+		return userDao.checkUserNickname(nickname);
 	}
 	@Override
 	public void updateUserInfo(User newUserInfo) {
@@ -184,5 +183,4 @@ public class LehgoImpl implements LehgoFacade{
 	public int deleteFolderPlace(int folderId, int placeId) {
 		return fpRepo.deleteByFolderIdAndPlaceId(folderId, placeId);
 	}
-
 }
