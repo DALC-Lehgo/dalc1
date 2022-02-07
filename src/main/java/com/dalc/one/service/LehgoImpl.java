@@ -89,6 +89,10 @@ public class LehgoImpl implements LehgoFacade{
 	
 	// ** Place **
 	@Override
+	public Place getPlace(int id) {
+		return placeRepo.findByPalcaeId(id);
+	}
+	@Override
 	public List<Place> getPlaceListbyName(String name) throws DataAccessException {
 		return placeRepo.findByPlaceNameContaining(name);
 	}
@@ -183,4 +187,5 @@ public class LehgoImpl implements LehgoFacade{
 	public int deleteFolderPlace(int folderId, int placeId) {
 		return fpRepo.deleteByFolderIdAndPlaceId(folderId, placeId);
 	}
+
 }
