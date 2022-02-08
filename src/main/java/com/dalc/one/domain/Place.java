@@ -24,7 +24,7 @@ import lombok.Setter;
 public class Place implements Serializable{
 	@Id
 	@Column(name="place_id")
-	private int palcaeId;
+	private int placeId;
 	
 	@Column(name="place_name")
 	private String placeName;

@@ -12,5 +12,5 @@ public interface PlaceRepository extends CrudRepository<Place, Long>{
 	List<Place> findByAttraction_Category(String category) throws DataAccessException;
 	List<Place> findByAddressContaining(String area) throws DataAccessException;
 	List<Place> findByContentContaining(String content)throws DataAccessException;
-	Place findByPalcaeId(int id) throws DataAccessException;
+	Place findByPlaceId(int id) throws DataAccessException;
 }
