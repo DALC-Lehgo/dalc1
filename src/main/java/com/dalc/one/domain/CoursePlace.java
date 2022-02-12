@@ -7,9 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name="course_place")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CoursePlace implements Serializable{
 	@Id
 	@Column(name="course_Id")

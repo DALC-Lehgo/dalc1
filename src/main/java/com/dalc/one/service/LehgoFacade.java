@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.dao.DataAccessException;
 
+import com.dalc.one.domain.Course;
 import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
@@ -53,5 +54,13 @@ public interface LehgoFacade {
 	FolderPlace addFolderPlace(int folderId, int placeId);
 	List<FolderPlace> getFolderPlaceList(int folderId);
 	int deleteFolderPlace(int folderId, int placeId);
+	
+	/* Course */
+	List<Course> getCourseList(String userId);
+	Course getCourse(int id);
+	Course getCourseByUserId(String id, int courseId);
+	Course addCourse(@Valid User user);
+	Course updateCourse(Course course);
+	int deleteCourse(int cid);
 	
 }

@@ -73,7 +73,7 @@ public class UserController{
 	
 	// 회원가입
 	@PostMapping("/users/new")
-	public ResponseEntity signUp(@Valid @RequestBody User user, HttpServletResponse response){
+	public ResponseEntity<HttpStatus> signUp(@Valid @RequestBody User user, HttpServletResponse response){
 		//기본적인 형식은 프론트에서 1차적으로 검증
 		try {
 //			if (lehgo.checkUserId(user.getId()) > 0) {
@@ -172,7 +172,7 @@ public class UserController{
 	
 	// 유저 정보 수정
 	@PostMapping("users")
-	public ResponseEntity updateUserInfo(HttpServletRequest request,
+	public ResponseEntity<HttpStatus> updateUserInfo(HttpServletRequest request,
 			@RequestBody User newUserInfo,
 			@RequestParam(value = "id") String userId) {
 		
@@ -209,7 +209,7 @@ public class UserController{
 	
 	// 유저 탈퇴
 	@DeleteMapping("users/{id}")
-	public ResponseEntity deleteUser(HttpServletRequest request,
+	public ResponseEntity<HttpStatus> deleteUser(HttpServletRequest request,
 			@PathVariable("id") String userId) {
 		//탈퇴 요청 ID와 로그인 ID의 일치 여부 확인
 		String authorizationHeader = request.getHeader("authorization");

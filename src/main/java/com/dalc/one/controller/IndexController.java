@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dalc.one.domain.User;
 import com.dalc.one.service.LehgoFacade;
-import com.dalc.one.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class IndexController {
 	private LehgoFacade lehgo;
-	private UserService userService;
 
-	@Autowired
-	public void setUserDetailServiceImpl(UserService userService) {
-		this.userService = userService;
-	}
 
 	@Autowired
 	public void setFacade(LehgoFacade lehgo) {

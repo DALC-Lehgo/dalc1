@@ -14,8 +14,10 @@ import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
+import com.dalc.one.domain.Course;
 import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
+import com.dalc.one.repository.CourseRepository;
 import com.dalc.one.repository.FolderPlaceRepository;
 import com.dalc.one.repository.FolderRepository;
 import com.dalc.one.repository.PlaceRepository;
@@ -44,6 +46,9 @@ public class LehgoImpl implements LehgoFacade{
 	
 	@Autowired
 	private FolderPlaceRepository fpRepo;
+	
+	@Autowired
+	private CourseRepository courseRepo;
 	
 	
 	public List<User> getUserList(){
@@ -90,7 +95,7 @@ public class LehgoImpl implements LehgoFacade{
 	// ** Place **
 	@Override
 	public Place getPlace(int id) {
-		return placeRepo.findByPalcaeId(id);
+		return placeRepo.findByPlaceId(id);
 	}
 	@Override
 	public List<Place> getPlaceListbyName(String name) throws DataAccessException {
@@ -186,6 +191,38 @@ public class LehgoImpl implements LehgoFacade{
 	@Override
 	public int deleteFolderPlace(int folderId, int placeId) {
 		return fpRepo.deleteByFolderIdAndPlaceId(folderId, placeId);
+	}
+	
+	/* Course */
+	@Override
+	public List<Course> getCourseList(String userId) {
+		return courseRepo.findByUserId(userId);
+	}
+	@Override
+	public Course getCourse(int id) {
+		return courseRepo.findByCourseId(id);
+	}
+	@Override
+	public Course getCourseByUserId(String id, int courseId) {
+		return courseRepo.findByCourseIdAndUserId(courseId, id);
+	}
+	@Override
+	public Course addCourse(@Valid User user) {
+		Course entity = new Course();
+		entity.setUserId(user.getId());
+		entity.setEditable(1);
+		entity.setLikeCount(0);
+		entity.setVisibility(1);
+
+		return courseRepo.save(entity);
+	}
+	@Override
+	public Course updateCourse(Course course) {
+		return courseRepo.save(course);
+	}
+	@Override
+	public int deleteCourse(int cid) {
+		return courseRepo.deleteByCourseId(cid);
 	}
 
 }
