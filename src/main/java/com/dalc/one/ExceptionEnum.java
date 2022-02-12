@@ -21,7 +21,9 @@ public enum ExceptionEnum {
 	//인증
 	NOT_LOGIN(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."), 
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
-	//
+	PERMISSION_FAIL(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
+	
+	//입력 오류
 	INPUT_FAIL(HttpStatus.CONFLICT, "입력 실패.");
 	
     private final HttpStatus status;
