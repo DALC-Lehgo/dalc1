@@ -2,11 +2,9 @@ package com.dalc.one.repository;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.CrudRepository;
 
 import com.dalc.one.domain.Course;
-import com.dalc.one.domain.FolderPlace;
 
 public interface CourseRepository extends CrudRepository<Course, Long>{
 

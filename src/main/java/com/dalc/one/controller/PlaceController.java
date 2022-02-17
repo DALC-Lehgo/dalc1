@@ -61,7 +61,17 @@ public class PlaceController{
 		return ResponseEntity.ok(lehgo.getPlaceListbyContent(content));
 	}
 	
+	@ResponseBody
+	@GetMapping("search/name")
+	public ResponseEntity<List<Place>> getPlaceListbyName(@RequestParam("name") String name ) throws Exception {
+		return ResponseEntity.ok(lehgo.getPlaceListbyName(name));
+	}
 	
+	@ResponseBody
+	@GetMapping("search/all")
+	public ResponseEntity<List<Place>> getPlaceListbyAll(@RequestParam("query") String query) throws Exception {
+		return ResponseEntity.ok(lehgo.getPlaceListbyAll(query));
+	}
 	
 	/* 사용자 선호 여행지 리스트*/
 	@ResponseBody

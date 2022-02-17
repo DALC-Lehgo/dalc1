@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.dao.DataAccessException;
 
 import com.dalc.one.domain.Course;
+import com.dalc.one.domain.CoursePlace;
 import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
@@ -37,6 +38,7 @@ public interface LehgoFacade {
 	List<Place> getPlaceListbyCategory (String category) throws DataAccessException;
 	List<Place> getPlaceListbyArea(String area) throws DataAccessException;
 	List<Place> getPlaceListbyContent(String content) throws DataAccessException;
+	List<Place> getPlaceListbyAll(String query);
 	//Place-리스트
 	UserLikePlace addUserplace(User user, int id) throws DataAccessException;
 	int deleteUserPlace(@Valid User user, int id) throws DataAccessException;
@@ -62,5 +64,8 @@ public interface LehgoFacade {
 	Course addCourse(@Valid User user);
 	Course updateCourse(Course course);
 	int deleteCourse(int cid);
+	List<CoursePlace> getCourseDetail(int courseId);
+	CoursePlace addCourseDetail(int courseId, int placeId);
+	int deleteCourseDetail(int cid, int pid);
 	
 }
