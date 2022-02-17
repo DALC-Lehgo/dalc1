@@ -1,12 +1,15 @@
 package com.dalc.one.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -39,6 +42,10 @@ public class Course implements Serializable{
 	
 	@Column(name="user_id")
 	private String userId;
+	
+	@OneToMany
+    @JoinColumn(name="course_id", insertable = false, updatable = false)
+	private Collection<CoursePlace> coursePlace;
 	
 	private int visibility;
 	

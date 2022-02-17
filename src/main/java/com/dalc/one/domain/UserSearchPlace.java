@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,8 +28,6 @@ class UserSearchPlacePK implements Serializable{
 	private int placeId;	
 }
 
-
-
 @SuppressWarnings("serial")
 @Entity
 @Table(name="user_search_place")
@@ -44,6 +44,10 @@ public class UserSearchPlace implements Serializable{
 	@Id
 	@Column(name="place_id")
 	private int placeId;
+	
+	@OneToOne
+    @JoinColumn(name="place_id", insertable = false, updatable = false)
+	private Place place;
 	
 	@CreationTimestamp
 	private Date time;

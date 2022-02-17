@@ -1,22 +1,9 @@
 package com.dalc.one.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-import org.springframework.context.annotation.Role;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import com.dalc.one.user.UserDTO;
-
-import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

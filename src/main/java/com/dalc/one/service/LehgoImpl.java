@@ -15,8 +15,10 @@ import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
 import com.dalc.one.domain.Course;
+import com.dalc.one.domain.CoursePlace;
 import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
+import com.dalc.one.repository.CoursePlaceRepository;
 import com.dalc.one.repository.CourseRepository;
 import com.dalc.one.repository.FolderPlaceRepository;
 import com.dalc.one.repository.FolderRepository;
@@ -50,6 +52,8 @@ public class LehgoImpl implements LehgoFacade{
 	@Autowired
 	private CourseRepository courseRepo;
 	
+	@Autowired
+	private CoursePlaceRepository cpRepo;
 	
 	public List<User> getUserList(){
 		return userDao.getUserList();
@@ -115,6 +119,13 @@ public class LehgoImpl implements LehgoFacade{
 		result.addAll(placeRepo.findByPlaceNameContaining(content));
 		return result;
 	}
+	@Override
+	public List<Place> getPlaceListbyAll(String query) {
+		List<Place> result = placeRepo.findByContentContaining(query);
+		result.addAll(placeRepo.findByPlaceNameContaining(query));
+		result.addAll(placeRepo.findByAddressContaining(query));
+		return result;
+	}
 	
 	
 	/* UserPlace List */
@@ -164,6 +175,7 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public int deleteFolder(@Valid User user, int id) {
+		fpRepo.deleteByFolderId(id);
 		return folderRepo.deleteByUserIdAndFolderId(user.getId(), id);
 	}
 	@Override
@@ -222,7 +234,26 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public int deleteCourse(int cid) {
+		cpRepo.deleteByCourseId(cid);
 		return courseRepo.deleteByCourseId(cid);
+	}
+	
+	/* Course Detail */
+	@Override
+	public List<CoursePlace> getCourseDetail(int courseId) {
+		return cpRepo.findByCourseId(courseId);
+	}
+	@Override
+	public CoursePlace addCourseDetail(int courseId, int placeId) {
+		CoursePlace entity = new CoursePlace();
+		entity.setCourseId(courseId);
+		entity.setPlaceId(placeId);
+		
+		return cpRepo.save(entity);
+	}
+	@Override
+	public int deleteCourseDetail(int cid, int pid) {
+		return cpRepo.deleteByCourseIdAndPlaceId(cid, pid);
 	}
 
 }

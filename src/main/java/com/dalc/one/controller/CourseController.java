@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dalc.one.ExceptionEnum;
 import com.dalc.one.domain.Course;
+import com.dalc.one.domain.CoursePlace;
 import com.dalc.one.domain.User;
 import com.dalc.one.jwt.JwtTokenProvider;
 import com.dalc.one.service.LehgoFacade;
@@ -75,6 +76,24 @@ public class CourseController{
 	}
 	
 	@ResponseBody
+	@GetMapping("detail")
+	public ResponseEntity<List<CoursePlace>> getCourseDetail(HttpServletRequest request, @RequestParam("cid") int courseId) throws Exception {	
+		return ResponseEntity.ok(lehgo.getCourseDetail(courseId));
+	}
+	
+	@ResponseBody
+	@GetMapping("detail/new")
+	public ResponseEntity<CoursePlace> AddCourseDetail(HttpServletRequest request, 
+			@RequestParam("cid") int courseId, @RequestParam("pid") int placeId) throws Exception {
+		CoursePlace result = lehgo.addCourseDetail(courseId, placeId);
+		if (result == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.INPUT_FAIL.getStatus(), ExceptionEnum.INPUT_FAIL.getMessage());
+		}
+		return ResponseEntity.ok(result);
+	}
+	
+	@ResponseBody
 	@PostMapping("new")
 	public ResponseEntity<Course> addNewCourse(HttpServletRequest request,
 			@Valid @RequestBody User user) throws Exception {
@@ -114,6 +133,16 @@ public class CourseController{
 	public ResponseEntity<HttpStatus> deleteCourse(HttpServletRequest request, @RequestParam("cid") int cid) throws Exception {
 		
 		int result = lehgo.deleteCourse(cid);
+
+		if(result > 0) return ResponseEntity.ok(HttpStatus.OK);
+		else return ResponseEntity.ok(HttpStatus.CONFLICT);
+	}
+	
+	@ResponseBody
+	@DeleteMapping("detail/delete")
+	public ResponseEntity<HttpStatus> deleteCourseDetail(HttpServletRequest request, @RequestParam("cid") int cid, @RequestParam("pid") int pid) throws Exception {
+		
+		int result = lehgo.deleteCourseDetail(cid, pid);
 
 		if(result > 0) return ResponseEntity.ok(HttpStatus.OK);
 		else return ResponseEntity.ok(HttpStatus.CONFLICT);
