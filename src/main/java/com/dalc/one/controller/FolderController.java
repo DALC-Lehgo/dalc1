@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,6 +74,31 @@ public class FolderController{
 		}
 		
 		Folder result = lehgo.addFolder(user, name);
+		
+		if (result == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.INPUT_FAIL.getStatus(), ExceptionEnum.INPUT_FAIL.getMessage());
+		}
+		return ResponseEntity.ok(result);
+	}
+	
+	@ResponseBody
+	@PutMapping("update")
+	public ResponseEntity<Folder> updateFolder(HttpServletRequest request,
+			@Valid @RequestBody User user, @RequestParam("name") String newName, @RequestParam("id") int forderId ) throws Exception {
+		String authorizationHeader = request.getHeader("authorization");
+		if (authorizationHeader == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		else if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(user.getId())) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_MATCH.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		
+		Folder folder = lehgo.getFolder(forderId);
+		folder.setFolderName(newName);
+		Folder result = lehgo.updateFolder(folder, newName);
 		
 		if (result == null) {
 			throw new ResponseStatusException

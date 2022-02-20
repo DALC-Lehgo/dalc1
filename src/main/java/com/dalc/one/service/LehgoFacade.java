@@ -67,5 +67,5 @@ public interface LehgoFacade {
 	List<CoursePlace> getCourseDetail(int courseId);
 	CoursePlace addCourseDetail(int courseId, int placeId);
 	int deleteCourseDetail(int cid, int pid);
-	
+	Folder updateFolder(Folder newFolder, String name);	
 }
