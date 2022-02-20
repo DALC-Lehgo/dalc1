@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+@SuppressWarnings("serial")
 public class UserAuthentication extends UsernamePasswordAuthenticationToken {
 
     public UserAuthentication(String principal, String credentials) {
