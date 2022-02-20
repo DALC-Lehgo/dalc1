@@ -91,7 +91,6 @@ public class GoogleOauth implements SocialOauth {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<GoogleLoginRequest> httpRequestEntity = new HttpEntity<>(requestParams, headers);
             ResponseEntity<String> apiResponseJson = restTemplate.postForEntity(GOOGLE_SNS_TOKEN_BASE_URL + "/token", httpRequestEntity, String.class);
-
             // ObjectMapper를 통해 String to Object로 변환
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);

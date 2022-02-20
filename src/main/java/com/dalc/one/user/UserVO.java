@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.dalc.one.domain.User;
 
 import io.jsonwebtoken.Claims;
-import lombok.Builder;
 
+@SuppressWarnings("serial")
 public class UserVO implements UserDetails{
 	private List<GrantedAuthority> authorities;
 	private String id;

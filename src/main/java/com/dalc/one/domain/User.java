@@ -42,13 +42,6 @@ public class User implements Serializable {
 		this.password = password;
 		this.auth = auth;
 	}
-	
-	@Builder
-	public User(String id, String password, String platform) {
-		this.id = id;
-		this.email = email;
-		this.platform = platform;
-	}
 
 	@Override
 	public String toString() {
