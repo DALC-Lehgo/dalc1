@@ -82,13 +82,11 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public void updateUserInfo(User newUserInfo) {
-		// TODO Auto-generated method stub
-		
+		userDao.updateUserInfo(newUserInfo);
 	}
 	@Override
 	public void deleteUser(String userId) {
-		// TODO Auto-generated method stub
-		
+		userDao.deleteUser(userId);;
 	}
 	
 	@Override
@@ -174,6 +172,11 @@ public class LehgoImpl implements LehgoFacade{
 		return folderRepo.save(entity);
 	}
 	@Override
+	public Folder updateFolder(Folder folder, String name) {
+		folder.setFolderName(name);
+		return folderRepo.save(folder);
+	}
+	@Override
 	public int deleteFolder(@Valid User user, int id) {
 		fpRepo.deleteByFolderId(id);
 		return folderRepo.deleteByUserIdAndFolderId(user.getId(), id);
@@ -255,5 +258,4 @@ public class LehgoImpl implements LehgoFacade{
 	public int deleteCourseDetail(int cid, int pid) {
 		return cpRepo.deleteByCourseIdAndPlaceId(cid, pid);
 	}
-
 }

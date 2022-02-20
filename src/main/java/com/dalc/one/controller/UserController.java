@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import com.dalc.one.user.UserDTO;
 import com.dalc.one.jwt.JwtTokenProvider;
 import com.dalc.one.service.LehgoFacade;
 import com.dalc.one.user.UserService;
+import com.dalc.one.user.UserVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -76,18 +78,18 @@ public class UserController{
 	public ResponseEntity<HttpStatus> signUp(@Valid @RequestBody User user, HttpServletResponse response){
 		//기본적인 형식은 프론트에서 1차적으로 검증
 		try {
-//			if (lehgo.checkUserId(user.getId()) > 0) {
-//				throw new ResponseStatusException
-//					(ExceptionEnum.EXIST_ID.getStatus(), ExceptionEnum.EXIST_ID.getMessage());
-//			}
-//			if (lehgo.checkUserEmail(user.getEmail()) > 0) {
-//				throw new ResponseStatusException
-//				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
-//			}
-//			if (lehgo.checkUserNickname(user.getNickname()) > 0) {
-//				throw new ResponseStatusException
-//				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
-//			}
+			if (lehgo.checkUserId(user.getId()) > 0) {
+				throw new ResponseStatusException
+					(ExceptionEnum.EXIST_ID.getStatus(), ExceptionEnum.EXIST_ID.getMessage());
+			}
+			if (lehgo.checkUserEmail(user.getEmail()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_EMAIL.getStatus(), ExceptionEnum.EXIST_EMAIL.getMessage());
+			}
+			if (lehgo.checkUserNickname(user.getNickname()) > 0) {
+				throw new ResponseStatusException
+				(ExceptionEnum.EXIST_NICKNAME.getStatus(), ExceptionEnum.EXIST_NICKNAME.getMessage());
+			}
 			userService.signUp(user);
 		} catch(NullPointerException e) {
 			throw new ResponseStatusException
@@ -231,17 +233,17 @@ public class UserController{
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
-//	@GetMapping("/checkUser")
-//	public ResponseEntity<JSONObject> checkUser(HttpServletRequest request) {
-//		String authorizationHeader = request.getHeader("authorization");
-//		if (authorizationHeader != null) {
-//			UserVO user = JwtTokenProvider.getUserOf(authorizationHeader);
-//
-//			JSONObject userdata = new JSONObject();
-//			userdata.put("id", user.getUsername());
-//			userdata.put("auth", user.getUsername());
-//			return ResponseEntity.ok(userdata);
-//		}
-//		return null;
-//	}
+	@GetMapping("/checkUser")
+	public ResponseEntity<JSONObject> checkUser(HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("authorization");
+		if (authorizationHeader != null) {
+			UserVO user = JwtTokenProvider.getUserOf(authorizationHeader);
+
+			JSONObject userdata = new JSONObject();
+			userdata.put("id", user.getUsername());
+			userdata.put("auth", user.getUsername());
+			return ResponseEntity.ok(userdata);
+		}
+		return null;
+	}
 }
