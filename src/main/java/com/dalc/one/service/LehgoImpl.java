@@ -1,5 +1,6 @@
 package com.dalc.one.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -106,38 +107,42 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public List<Place> getPlaceListbyName(String name) throws DataAccessException {
-		return placeRepo.findByPlaceNameContaining(name);
+		return placeRepo.findByPlaceNameContainingAndUserIdIsNull(name);
 	}
 	@Override
 	public List<Place> getPlaceListbyCategory(String category) throws DataAccessException {
-		return placeRepo.findByAttraction_Category(category);
+		return placeRepo.findByAttraction_CategoryAndUserIdIsNull(category);
 	}
 	@Override
 	public List<Place> getPlaceListbyArea(String area) throws DataAccessException {
-		return placeRepo.findByAddressContaining(area);
+		return placeRepo.findByAddressContainingAndUserIdIsNull(area);
 	}
 	@Override
 	public List<Place> getPlaceListbyContent(String content) throws DataAccessException {
-		List<Place> result = placeRepo.findByContentContaining(content);
-		result.addAll(placeRepo.findByPlaceNameContaining(content));
+		List<Place> result = placeRepo.findByContentContainingAndUserIdIsNull(content);
+		result.addAll(placeRepo.findByPlaceNameContainingAndUserIdIsNull(content));
 		return result;
 	}
 	@Override
 	public List<Place> getPlaceListbyAll(String query) {
-		List<Place> result = placeRepo.findByContentContaining(query);
-		result.addAll(placeRepo.findByPlaceNameContaining(query));
-		result.addAll(placeRepo.findByAddressContaining(query));
+		List<Place> result = placeRepo.findByContentContainingAndUserIdIsNull(query);
+		result.addAll(placeRepo.findByPlaceNameContainingAndUserIdIsNull(query));
+		result.addAll(placeRepo.findByAddressContainingAndUserIdIsNull(query));
 		return result;
 	}
+	@Override
+	public Place addPlace(Place place) {
+		return placeRepo.save(place);
+	}
 	
-	
-	/* UserPlace List */
+	/* UserPlace */
 	@Override
 	public UserLikePlace addUserplace(User user, int id) throws DataAccessException {
 		UserLikePlace ulp = new UserLikePlace();
 		ulp.setPlaceId(id);
 		ulp.setUserId(user.getId());
-	
+		LocalDateTime now = LocalDateTime.now();
+		ulp.setTime(now);
 		return ulpRepo.save(ulp);
 	}
 	@Override
@@ -146,20 +151,22 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public List<UserLikePlace> getUserPlaceList(@Valid User user) throws DataAccessException {
-		return ulpRepo.findByUserId(user.getId());
+		return ulpRepo.findByUserIdOrderByTimeDesc(user.getId());
 	}
 	
 	/* User Visited Place List */
 	@Override
 	public List<UserSearchPlace> getUserVisitedList(@Valid User user) throws DataAccessException {
-		return usRepo.findByUserId(user.getId());
+		return usRepo.findByUserIdOrderByTimeDesc(user.getId());
 	}
 	@Override
 	public UserSearchPlace addUserVisitedPlace(@Valid User user, int id) {
 		UserSearchPlace result = new UserSearchPlace();
 		result.setPlaceId(id);
 		result.setUserId(user.getId());
-	
+		
+		LocalDateTime now = LocalDateTime.now();
+		result.setTime(now);
 		return usRepo.save(result);
 	}
 	@Override
@@ -276,7 +283,8 @@ public class LehgoImpl implements LehgoFacade{
 		UserLikeCourse entity = new UserLikeCourse();
 		entity.setCourseId(courseId);
 		entity.setUserId(user.getId());
-		
+		LocalDateTime now = LocalDateTime.now();
+		entity.setTime(now);
 		return ulcRepo.save(entity);
 	}
 	@Override
@@ -285,6 +293,7 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public List<UserLikeCourse> getUserLikeCourse(String userId) {
-		return ulcRepo.findByUserIdOrderByTime(userId);
+		return ulcRepo.findByUserIdOrderByTimeDesc(userId);
 	}
+
 }

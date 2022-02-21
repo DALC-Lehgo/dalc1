@@ -9,5 +9,5 @@ import com.dalc.one.domain.UserLikePlace;
 
 public interface UserLikePlaceRepository extends CrudRepository<UserLikePlace, Long>{
 	int deleteByUserIdAndPlaceId(String userId, int placeId) throws DataAccessException;
-	List<UserLikePlace> findByUserId(String id);
+	List<UserLikePlace> findByUserIdOrderByTimeDesc(String id);
 }

@@ -11,6 +11,6 @@ public interface UserLikeCourseRepository extends CrudRepository<UserLikeCourse,
 
 	int deleteByUserIdAndCourseId(String id, int cid);
 
-	List<UserLikeCourse> findByUserIdOrderByTime(String userId);
+	List<UserLikeCourse> findByUserIdOrderByTimeDesc(String userId);
 
 }
