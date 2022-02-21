@@ -26,6 +26,7 @@ public enum ExceptionEnum {
 	//입력 오류
 	INPUT_FAIL(HttpStatus.CONFLICT, "입력 실패."),
 	NOT_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 데이터 값입니다.");
+
 	
     private final HttpStatus status;
     private String message;

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dalc.one.ExceptionEnum;
-import com.dalc.one.domain.Course;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;

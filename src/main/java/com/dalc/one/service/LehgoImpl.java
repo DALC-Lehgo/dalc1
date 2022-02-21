@@ -253,6 +253,10 @@ public class LehgoImpl implements LehgoFacade{
 		cpRepo.deleteByCourseId(cid);
 		return courseRepo.deleteByCourseId(cid);
 	}
+	@Override
+	public List<Course> getVisibleCourse() {
+		return courseRepo.findByVisibility(1);
+	}
 	
 	/* Course Detail */
 	@Override
@@ -295,5 +299,6 @@ public class LehgoImpl implements LehgoFacade{
 	public List<UserLikeCourse> getUserLikeCourse(String userId) {
 		return ulcRepo.findByUserIdOrderByTimeDesc(userId);
 	}
+
 
 }

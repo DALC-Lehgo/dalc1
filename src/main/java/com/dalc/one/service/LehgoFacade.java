@@ -56,23 +56,28 @@ public interface LehgoFacade {
 	int deleteFolder(@Valid User user, int id);
 	List<Folder> getFolderList(String userId);
 	Folder getFolder(int id);
+	Folder updateFolder(Folder newFolder, String name);
+	/* Folder Place */
 	FolderPlace addFolderPlace(int folderId, int placeId);
 	List<FolderPlace> getFolderPlaceList(int folderId);
 	int deleteFolderPlace(int folderId, int placeId);
 	
+
 	/* Course */
 	List<Course> getCourseList(String userId);
+	List<Course> getVisibleCourse();
 	Course getCourse(int id);
 	Course getCourseByUserId(String id, int courseId);
 	Course addCourse(@Valid User user, String courseName);
 	Course updateCourse(Course course);
 	int deleteCourse(int cid);
+	/* CoursePlace */
 	List<CoursePlace> getCourseDetail(int courseId);
 	CoursePlace addCourseDetail(int courseId, int placeId, int priority);
 	int deleteCourseDetail(int cid, int pid);
-	Folder updateFolder(Folder newFolder, String name);
 	CoursePlace updateCoursePlace(CoursePlace coursePlace);
 	
+
 	/* Like Course */
 	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
 	int deleteUserLikeCourse(@Valid User user, int cid);

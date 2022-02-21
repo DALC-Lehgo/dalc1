@@ -16,5 +16,7 @@ public interface CourseRepository extends CrudRepository<Course, Long>{
 
 	int deleteByCourseId(int courseId);
 
+	List<Course> findByVisibility(int i);
+
 
 }
