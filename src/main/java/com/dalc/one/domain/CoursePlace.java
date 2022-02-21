@@ -40,6 +40,8 @@ public class CoursePlace implements Serializable{
 	@Column(name="place_id")
 	private int placeId;
 	
+	private int priority;
+	
 	@OneToOne
     @JoinColumn(name="place_id", insertable = false, updatable = false)
 	private Place place;

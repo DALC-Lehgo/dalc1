@@ -53,4 +53,7 @@ public class Course implements Serializable{
 	
 	@Column(name="like_count")
 	private int likeCount;
+	
+	@Column(name="course_name")
+	private String courseName;
 }
