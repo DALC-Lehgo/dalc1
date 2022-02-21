@@ -26,7 +26,7 @@ public class JwtTokenProvider {
             .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
             .claim("id", user.getUsername())
             .claim("auth", user.getAuth())
-//          .claim("name", user.getName())
+            .claim("nickname", user.getNickname())
             .signWith(SignatureAlgorithm.HS256, JwtProperties.getSecretKey())
             .compact();
   }

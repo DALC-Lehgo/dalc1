@@ -49,16 +49,15 @@ public class UserController{
 		this.lehgo = lehgo;
 	}
 	
-	
 	// 로그인
 	@PostMapping("/user")
-	public ResponseEntity<String> login(@Valid @RequestBody UserDTO user, 
+	public ResponseEntity<UserVO> login(@Valid @RequestBody UserDTO user, 
 			HttpServletResponse response) throws IOException {
 		try {
 			if (userService.checkPassword(user)) {
 				String token = JwtTokenProvider.makeJwtToken(userService.loadUserByUsername(user.getId()));
 				response.setHeader("authorization", "bearer " + token);
-				return ResponseEntity.ok(user.getId());
+				return ResponseEntity.ok(JwtTokenProvider.getUserOf("bearer " + token));
 			}
 			else {
 				//비밀번호가 맞지 않는 경우
@@ -174,7 +173,7 @@ public class UserController{
 	
 	// 유저 정보 수정
 	@PostMapping("users")
-	public ResponseEntity<HttpStatus> updateUserInfo(HttpServletRequest request,
+	public ResponseEntity<UserVO> updateUserInfo(HttpServletRequest request,
 			@RequestBody User newUserInfo,
 			@RequestParam(value = "id") String userId) {
 		
@@ -206,7 +205,7 @@ public class UserController{
 			throw new ResponseStatusException
 			(ExceptionEnum.NULL.getStatus(), ExceptionEnum.NULL.getMessage());
 		}
-		return ResponseEntity.ok(HttpStatus.OK);
+		return ResponseEntity.ok(JwtTokenProvider.getUserOf(authorizationHeader));
 	}
 	
 	// 유저 탈퇴
