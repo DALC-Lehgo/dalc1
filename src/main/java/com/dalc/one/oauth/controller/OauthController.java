@@ -2,8 +2,6 @@ package com.dalc.one.oauth.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,11 +41,13 @@ public class OauthController {
      * @return SNS Login 요청 결과로 받은 Json 형태의 String 문자열 (access_token, refresh_token 등)
      */
     @GetMapping(value = "/{socialLoginType}/callback")
-    public ResponseEntity<HttpStatus> callback(
+    public void callback(
             @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
             @RequestParam(name = "code") String code, HttpServletResponse response) {
         log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
         response.setHeader("authorization", (String) oauthService.requestAccessToken(socialLoginType, code));
-        return ResponseEntity.ok(HttpStatus.OK);
+        response.setHeader("Location", "http://127.0.0.1:8081/login");
+
+        response.setStatus(302);
     }
 }

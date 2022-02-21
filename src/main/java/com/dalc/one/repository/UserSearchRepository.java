@@ -9,5 +9,5 @@ import com.dalc.one.domain.UserSearchPlace;
 
 public interface UserSearchRepository extends CrudRepository<UserSearchPlace, Long>{
 	int deleteByUserIdAndPlaceId(String userId, int placeId) throws DataAccessException;
-	List<UserSearchPlace> findByUserId(String id);
+	List<UserSearchPlace> findByUserIdOrderByTimeDesc(String id);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dalc.one.ExceptionEnum;
+import com.dalc.one.domain.Course;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
 import com.dalc.one.domain.UserLikePlace;
@@ -168,6 +169,30 @@ public class PlaceController{
 		} else {
 			return ResponseEntity.ok(HttpStatus.CONFLICT);
 		}
+	}
+	
+	/* UserPlace */
+	@ResponseBody
+	@PostMapping("new")
+	public ResponseEntity<Place> addNewPlace(HttpServletRequest request,
+			@RequestBody Place place, @RequestParam("id") String userId) throws Exception {
+		String authorizationHeader = request.getHeader("authorization");
+		if (authorizationHeader == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		else if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(userId)) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_MATCH.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		
+		Place result = lehgo.addPlace(place);
+		
+		if (result == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.INPUT_FAIL.getStatus(), ExceptionEnum.INPUT_FAIL.getMessage());
+		}
+		return ResponseEntity.ok(result);
 	}
 	
 }

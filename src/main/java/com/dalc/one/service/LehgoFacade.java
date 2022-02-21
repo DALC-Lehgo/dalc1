@@ -48,7 +48,9 @@ public interface LehgoFacade {
 	List<UserSearchPlace> getUserVisitedList(@Valid User user) throws DataAccessException;
 	UserSearchPlace addUserVisitedPlace(@Valid User user, int id) throws DataAccessException;
 	int deleteUserVisitedPlace(@Valid User user, int id) throws DataAccessException;
-	
+	/* UserPlace */
+	Place addPlace(Place place);	
+
 	/* Folder */
 	Folder addFolder(@Valid User user, String folder) throws DataAccessException;
 	int deleteFolder(@Valid User user, int id);
@@ -74,5 +76,5 @@ public interface LehgoFacade {
 	/* Like Course */
 	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
 	int deleteUserLikeCourse(@Valid User user, int cid);
-	List<UserLikeCourse> getUserLikeCourse(String userId);	
+	List<UserLikeCourse> getUserLikeCourse(String userId);
 }
