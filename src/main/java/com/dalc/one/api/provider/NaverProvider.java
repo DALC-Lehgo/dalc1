@@ -13,11 +13,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NaverBlogProvider {
+public class NaverProvider {
 	@Value("${NAVER-CLIENT}")
 	String clientId;
 	@Value("${NAVER-KEY}")
     String clientSecret;
+	
+	@Value("${NAVER-MAP-ID}")
+	String mapClientId;
+	@Value("${NAVER-MAP-KEY}")
+    String mapClientSecret;
 	
 	public String search(String query) {
 		try {
@@ -32,8 +37,23 @@ public class NaverBlogProvider {
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL,requestHeaders);
-        System.out.println(responseBody);
         
+        return responseBody;
+	}
+	
+	public String map(String query) {
+		try {
+			query = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("검색어 인코딩 실패",e);
+        }
+		
+		String apiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + query; 
+		
+		Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-NCP-APIGW-API-KEY-ID", mapClientId);
+        requestHeaders.put("X-NCP-APIGW-API-KEY", mapClientSecret);
+        String responseBody = get(apiURL,requestHeaders);        
         return responseBody;
 	}
 	

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dalc.one.api.provider.NaverBlogProvider;
+import com.dalc.one.api.provider.NaverProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,13 +20,22 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/open")
 public class NaverApiController{
 	@Autowired
-	NaverBlogProvider naver = new NaverBlogProvider();
+	NaverProvider naver = new NaverProvider();
 	
 	@ResponseBody
 	@GetMapping("naver/blog")
 	public ResponseEntity<JSONObject> getPlace(@RequestParam("query") String query) throws Exception {
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse( naver.search(query) );
+		JSONObject jsonObj = (JSONObject) obj;
+		return ResponseEntity.ok(jsonObj);
+	}
+	
+	@ResponseBody
+	@GetMapping("naver/map")
+	public ResponseEntity<JSONObject> getAddress(@RequestParam("query") String query) throws Exception {
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse( naver.map(query) );
 		JSONObject jsonObj = (JSONObject) obj;
 		return ResponseEntity.ok(jsonObj);
 	}
