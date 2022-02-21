@@ -24,7 +24,8 @@ public enum ExceptionEnum {
 	PERMISSION_FAIL(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
 	
 	//입력 오류
-	INPUT_FAIL(HttpStatus.CONFLICT, "입력 실패.");
+	INPUT_FAIL(HttpStatus.CONFLICT, "입력 실패."),
+	NOT_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 데이터 값입니다.");
 	
     private final HttpStatus status;
     private String message;

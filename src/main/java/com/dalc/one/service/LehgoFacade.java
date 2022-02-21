@@ -12,6 +12,7 @@ import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
 
@@ -61,11 +62,17 @@ public interface LehgoFacade {
 	List<Course> getCourseList(String userId);
 	Course getCourse(int id);
 	Course getCourseByUserId(String id, int courseId);
-	Course addCourse(@Valid User user);
+	Course addCourse(@Valid User user, String courseName);
 	Course updateCourse(Course course);
 	int deleteCourse(int cid);
 	List<CoursePlace> getCourseDetail(int courseId);
-	CoursePlace addCourseDetail(int courseId, int placeId);
+	CoursePlace addCourseDetail(int courseId, int placeId, int priority);
 	int deleteCourseDetail(int cid, int pid);
-	Folder updateFolder(Folder newFolder, String name);	
+	Folder updateFolder(Folder newFolder, String name);
+	CoursePlace updateCoursePlace(CoursePlace coursePlace);
+	
+	/* Like Course */
+	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
+	int deleteUserLikeCourse(@Valid User user, int cid);
+	List<UserLikeCourse> getUserLikeCourse(String userId);	
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dalc.one.dao.UserDAO;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
 import com.dalc.one.domain.Course;
@@ -23,6 +24,7 @@ import com.dalc.one.repository.CourseRepository;
 import com.dalc.one.repository.FolderPlaceRepository;
 import com.dalc.one.repository.FolderRepository;
 import com.dalc.one.repository.PlaceRepository;
+import com.dalc.one.repository.UserLikeCourseRepository;
 import com.dalc.one.repository.UserLikePlaceRepository;
 import com.dalc.one.repository.UserSearchRepository;
 import com.dalc.one.service.LehgoFacade;
@@ -54,6 +56,9 @@ public class LehgoImpl implements LehgoFacade{
 	
 	@Autowired
 	private CoursePlaceRepository cpRepo;
+	
+	@Autowired
+	private UserLikeCourseRepository ulcRepo;
 	
 	public List<User> getUserList(){
 		return userDao.getUserList();
@@ -222,12 +227,13 @@ public class LehgoImpl implements LehgoFacade{
 		return courseRepo.findByCourseIdAndUserId(courseId, id);
 	}
 	@Override
-	public Course addCourse(@Valid User user) {
+	public Course addCourse(@Valid User user, String name) {
 		Course entity = new Course();
 		entity.setUserId(user.getId());
 		entity.setEditable(1);
 		entity.setLikeCount(0);
 		entity.setVisibility(1);
+		entity.setCourseName(name);
 
 		return courseRepo.save(entity);
 	}
@@ -247,15 +253,38 @@ public class LehgoImpl implements LehgoFacade{
 		return cpRepo.findByCourseId(courseId);
 	}
 	@Override
-	public CoursePlace addCourseDetail(int courseId, int placeId) {
+	public CoursePlace addCourseDetail(int courseId, int placeId, int priority) {
 		CoursePlace entity = new CoursePlace();
 		entity.setCourseId(courseId);
 		entity.setPlaceId(placeId);
+		entity.setPriority(priority);
 		
 		return cpRepo.save(entity);
 	}
 	@Override
 	public int deleteCourseDetail(int cid, int pid) {
 		return cpRepo.deleteByCourseIdAndPlaceId(cid, pid);
+	}
+	@Override
+	public CoursePlace updateCoursePlace(CoursePlace coursePlace) {
+		return cpRepo.save(coursePlace);
+	}
+	
+	/* Like Courese */
+	@Override
+	public UserLikeCourse addUserLikeCourse(@Valid User user, int courseId) {
+		UserLikeCourse entity = new UserLikeCourse();
+		entity.setCourseId(courseId);
+		entity.setUserId(user.getId());
+		
+		return ulcRepo.save(entity);
+	}
+	@Override
+	public int deleteUserLikeCourse(@Valid User user, int cid) {
+		return ulcRepo.deleteByUserIdAndCourseId(user.getId(), cid);
+	}
+	@Override
+	public List<UserLikeCourse> getUserLikeCourse(String userId) {
+		return ulcRepo.findByUserIdOrderByTime(userId);
 	}
 }
