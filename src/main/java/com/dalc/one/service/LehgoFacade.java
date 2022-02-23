@@ -23,6 +23,7 @@ public interface LehgoFacade {
 	List<User> getUserList() throws DataAccessException;
 	User findUserbyUserId(String id) throws DataAccessException;
 	void signUp(User user) throws DataAccessException;
+	void signUpAll(User user);
 	String findUserID(String email) throws DataAccessException;
 	User findUser(String id, String email) throws DataAccessException;
 	public int checkUserId(String id) throws DataAccessException;

@@ -70,6 +70,9 @@ public class LehgoImpl implements LehgoFacade{
 	public void signUp(User user) {
 		userDao.signUp(user);
 	}
+	public void signUpAll(User user) {
+		userDao.signUpAll(user);
+	}
 	public String findUserID(String email) {
 		return userDao.findIdbyEmail(email);
 	}
