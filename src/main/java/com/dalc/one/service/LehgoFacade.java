@@ -12,6 +12,7 @@ import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserKeyword;
 import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
@@ -23,6 +24,7 @@ public interface LehgoFacade {
 	List<User> getUserList() throws DataAccessException;
 	User findUserbyUserId(String id) throws DataAccessException;
 	void signUp(User user) throws DataAccessException;
+	void signUpAll(User user);
 	String findUserID(String email) throws DataAccessException;
 	User findUser(String id, String email) throws DataAccessException;
 	public int checkUserId(String id) throws DataAccessException;
@@ -31,6 +33,7 @@ public interface LehgoFacade {
 	void updateUserInfo(User newUserInfo);
 	void deleteUser(String userId);
 	void resetPw(User user);
+	UserKeyword addUserKeyword(@Valid User user, int type);
 	
 	
 	//Place
@@ -82,4 +85,5 @@ public interface LehgoFacade {
 	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
 	int deleteUserLikeCourse(@Valid User user, int cid);
 	List<UserLikeCourse> getUserLikeCourse(String userId);
+	
 }
