@@ -12,6 +12,7 @@ import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserKeyword;
 import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
@@ -32,6 +33,7 @@ public interface LehgoFacade {
 	void updateUserInfo(User newUserInfo);
 	void deleteUser(String userId);
 	void resetPw(User user);
+	UserKeyword addUserKeyword(@Valid User user, int type);
 	
 	
 	//Place
@@ -83,4 +85,5 @@ public interface LehgoFacade {
 	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
 	int deleteUserLikeCourse(@Valid User user, int cid);
 	List<UserLikeCourse> getUserLikeCourse(String userId);
+	
 }

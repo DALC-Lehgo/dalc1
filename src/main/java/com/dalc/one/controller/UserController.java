@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dalc.one.ExceptionEnum;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserKeyword;
 import com.dalc.one.user.UserDTO;
 import com.dalc.one.jwt.JwtTokenProvider;
 import com.dalc.one.service.LehgoFacade;
@@ -129,9 +130,15 @@ public class UserController{
 		return ResponseEntity.ok(lehgo.checkUserEmail(email));
 	}
 	
+	@ResponseBody
+	@PostMapping("users/type")
+	public ResponseEntity<UserKeyword> adduserKeyword(@Valid @RequestBody User user, @RequestParam(value = "type") int type){
+		return ResponseEntity.ok(lehgo.addUserKeyword(user, type));
+	}
+	
 	// 아이디 찾기
 	@ResponseBody
-	@GetMapping("users/findid/{email}")
+	@PostMapping("users/findid/{email}")
 	public ResponseEntity<String> findUserId(@PathVariable("email") String email) throws Exception {
 		String userId = lehgo.findUserID(email);
 		

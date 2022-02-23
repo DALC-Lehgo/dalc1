@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dalc.one.dao.UserDAO;
 import com.dalc.one.domain.Place;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserKeyword;
 import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
@@ -25,6 +26,7 @@ import com.dalc.one.repository.CourseRepository;
 import com.dalc.one.repository.FolderPlaceRepository;
 import com.dalc.one.repository.FolderRepository;
 import com.dalc.one.repository.PlaceRepository;
+import com.dalc.one.repository.UserKeywordRepository;
 import com.dalc.one.repository.UserLikeCourseRepository;
 import com.dalc.one.repository.UserLikePlaceRepository;
 import com.dalc.one.repository.UserSearchRepository;
@@ -60,6 +62,9 @@ public class LehgoImpl implements LehgoFacade{
 	
 	@Autowired
 	private UserLikeCourseRepository ulcRepo;
+	
+	@Autowired
+	private UserKeywordRepository ukRepo;
 	
 	public List<User> getUserList(){
 		return userDao.getUserList();
@@ -101,6 +106,13 @@ public class LehgoImpl implements LehgoFacade{
 	@Override
 	public void resetPw(User user) {
 		userDao.resetPw(user.getPassword(), user.getId());
+	}
+	@Override
+	public UserKeyword addUserKeyword(User user, int type) {
+		UserKeyword entity = new UserKeyword();
+		entity.setUserId(user.getId());
+		entity.setKeywordId(type);
+		return ukRepo.save(entity);
 	}
 	
 	// ** Place **
@@ -302,6 +314,4 @@ public class LehgoImpl implements LehgoFacade{
 	public List<UserLikeCourse> getUserLikeCourse(String userId) {
 		return ulcRepo.findByUserIdOrderByTimeDesc(userId);
 	}
-
-
 }
