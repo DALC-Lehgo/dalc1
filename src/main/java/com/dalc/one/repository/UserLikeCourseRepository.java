@@ -13,6 +13,4 @@ public interface UserLikeCourseRepository extends CrudRepository<UserLikeCourse,
 
 	List<UserLikeCourse> findByUserIdOrderByTimeDesc(String userId);
 
-	void deleteByCourseId(int cid);
-
 }
