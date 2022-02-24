@@ -39,4 +39,13 @@ public class NaverApiController{
 		JSONObject jsonObj = (JSONObject) obj;
 		return ResponseEntity.ok(jsonObj);
 	}
+	
+	@ResponseBody
+	@GetMapping("naver/image")
+	public ResponseEntity<JSONObject> getImage(@RequestParam("query") String query) throws Exception {
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse( naver.image(query) );
+		JSONObject jsonObj = (JSONObject) obj;
+		return ResponseEntity.ok(jsonObj);
+	}
 }

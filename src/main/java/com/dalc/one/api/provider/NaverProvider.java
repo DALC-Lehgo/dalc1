@@ -57,6 +57,22 @@ public class NaverProvider {
         return responseBody;
 	}
 	
+	public String image(String query) {
+		try {
+			query = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("검색어 인코딩 실패",e);
+        }
+		
+		String apiURL = "https://openapi.naver.com/v1/search/image?sort=sim&query=" + query; 
+		
+		Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", clientId);
+        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        String responseBody = get(apiURL,requestHeaders);        
+        return responseBody;
+	}
+	
 	private String get(String apiUrl, Map<String, String> requestHeaders){
         HttpURLConnection con = connect(apiUrl);
         try {
