@@ -25,6 +25,7 @@ public interface LehgoFacade {
 	List<User> getUserList() throws DataAccessException;
 	User findUserbyUserId(String id) throws DataAccessException;
 	void signUp(User user) throws DataAccessException;
+	void signUpAll(User user);
 	String findUserID(String email) throws DataAccessException;
 	User findUser(String id, String email) throws DataAccessException;
 	public int checkUserId(String id) throws DataAccessException;
@@ -33,6 +34,7 @@ public interface LehgoFacade {
 	void updateUserInfo(User newUserInfo);
 	void deleteUser(String userId);
 	void resetPw(User user);
+	UserKeyword addUserKeyword(@Valid User user, int type);
 	
 	/* User Keyword */
 	UserKeyword getUserKeyword(@Valid User user);
@@ -92,4 +94,5 @@ public interface LehgoFacade {
 	UserLikeCourse addUserLikeCourse(@Valid User user, int courseId);
 	int deleteUserLikeCourse(@Valid User user, int cid);
 	List<UserLikeCourse> getUserLikeCourse(String userId);
+	
 }
