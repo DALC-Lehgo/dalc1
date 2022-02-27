@@ -246,4 +246,19 @@ public class UserController{
 		}
 		return null;
 	}
+	
+	@ResponseBody
+	@GetMapping("user/keyword/isin")
+	public ResponseEntity<Boolean> isInUserKeyword(HttpServletRequest request, @RequestParam("id") String userId) throws Exception {
+		String authorizationHeader = request.getHeader("authorization");
+		if (authorizationHeader == null) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_LOGIN.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		else if (!JwtTokenProvider.getUserOf(authorizationHeader).getUsername().equals(userId)) {
+			throw new ResponseStatusException
+				(ExceptionEnum.NOT_MATCH.getStatus(), ExceptionEnum.NOT_LOGIN.getMessage());
+		}
+		return ResponseEntity.ok(lehgo.isInUserKeyword(userId));
+	}
 }
