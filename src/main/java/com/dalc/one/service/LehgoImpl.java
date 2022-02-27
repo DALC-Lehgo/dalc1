@@ -70,7 +70,7 @@ public class LehgoImpl implements LehgoFacade{
 	
 	@Autowired
 	private PlaceKeywordRepository pkRepo;
-	
+
 	public List<User> getUserList(){
 		return userDao.getUserList();
 	}
@@ -79,6 +79,9 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	public void signUp(User user) {
 		userDao.signUp(user);
+	}
+	public void signUpAll(User user) {
+		userDao.signUpAll(user);
 	}
 	public String findUserID(String email) {
 		return userDao.findIdbyEmail(email);
@@ -108,6 +111,13 @@ public class LehgoImpl implements LehgoFacade{
 	@Override
 	public void resetPw(User user) {
 		userDao.resetPw(user.getPassword(), user.getId());
+	}
+	@Override
+	public UserKeyword addUserKeyword(User user, int type) {
+		UserKeyword entity = new UserKeyword();
+		entity.setUserId(user.getId());
+		entity.setKeywordId(type);
+		return ukRepo.save(entity);
 	}
 	
 	/* User Keyword */
@@ -278,7 +288,9 @@ public class LehgoImpl implements LehgoFacade{
 	}
 	@Override
 	public int deleteCourse(int cid) {
+		ulcRepo.deleteByCourseId(cid);
 		cpRepo.deleteByCourseId(cid);
+		
 		return courseRepo.deleteByCourseId(cid);
 	}
 	@Override
@@ -317,16 +329,21 @@ public class LehgoImpl implements LehgoFacade{
 		entity.setUserId(user.getId());
 		LocalDateTime now = LocalDateTime.now();
 		entity.setTime(now);
+		
+		Course course = courseRepo.findByCourseId(courseId);
+		course.setLikeCount(course.getLikeCount() + 1);
+		courseRepo.save(course);
 		return ulcRepo.save(entity);
 	}
 	@Override
 	public int deleteUserLikeCourse(@Valid User user, int cid) {
+		Course course = courseRepo.findByCourseId(cid);
+		course.setLikeCount(course.getLikeCount() - 1);
+		courseRepo.save(course);
 		return ulcRepo.deleteByUserIdAndCourseId(user.getId(), cid);
 	}
 	@Override
 	public List<UserLikeCourse> getUserLikeCourse(String userId) {
 		return ulcRepo.findByUserIdOrderByTimeDesc(userId);
 	}
-
-
 }

@@ -13,6 +13,7 @@ public interface UserMapper {
 	User findUserbyUserId(String id);
 	String findIdbyEmail(String email);
 	void signUp(User user);
+	void signUpAll(User user);
 
 	public int checkUserId(String id);
 	public int checkUserEmail(String email);

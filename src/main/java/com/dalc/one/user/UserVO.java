@@ -18,10 +18,12 @@ public class UserVO implements UserDetails{
 	private List<GrantedAuthority> authorities;
 	private String id;
 	private String password;
+	private String nickname;
 	private String auth;
 
 	public UserVO(User user) {
 		this.id = user.getId();
+		this.nickname = user.getNickname();
 		this.password = user.getPassword();
 		this.auth = user.getAuth();
 	}
@@ -38,6 +40,7 @@ public class UserVO implements UserDetails{
 	public UserVO(Claims claims) {
 		this.id = claims.get("id", String.class);
 		this.auth = claims.get("auth", String.class);
+		this.nickname = claims.get("nickname", String.class);
 	}
 
 	@Override
@@ -51,6 +54,9 @@ public class UserVO implements UserDetails{
 	}
 	public String getAuth() {
 		return auth;
+	}
+	public String getNickname() {
+		return nickname;
 	}
 
 	@Override

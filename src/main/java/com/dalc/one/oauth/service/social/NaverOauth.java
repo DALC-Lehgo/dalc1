@@ -152,10 +152,9 @@ public class NaverOauth implements SocialOauth {
                 			adminkey + profile.getResponse().getEmail(), profile.getResponse().getEmail(), 
                 			profile.getResponse().getName(), profile.getResponse().getGender(), 
                 			profile.getResponse().getAge(), "NAVER", " ", "ROLE_USER");
-                	
                 	//id가 없으면 가입
                 	if (lehgo.checkUserId(user.getId()) <= 0) {
-                		userService.signUp(user);
+                		userService.signUpAll(user);
         			}
                 	
             		token = JwtTokenProvider.makeJwtToken(userService.loadUserByUsername(user.getId()));            
