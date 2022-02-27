@@ -157,4 +157,11 @@ public class FolderController{
 			@RequestParam("folder") int folderId) throws Exception {
 		return ResponseEntity.ok(lehgo.getFolderPlaceList(folderId));
 	}
+	
+	@ResponseBody
+	@GetMapping("isin")
+	public ResponseEntity<Boolean> isInmyFolder(HttpServletRequest request, 
+			@RequestParam("pid") int placeId, @RequestParam("id") String userId) throws Exception {
+		return ResponseEntity.ok(lehgo.isInMyFolder(userId, placeId));
+	}
 }

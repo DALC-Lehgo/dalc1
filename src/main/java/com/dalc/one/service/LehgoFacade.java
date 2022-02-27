@@ -11,7 +11,9 @@ import com.dalc.one.domain.CoursePlace;
 import com.dalc.one.domain.Folder;
 import com.dalc.one.domain.FolderPlace;
 import com.dalc.one.domain.Place;
+import com.dalc.one.domain.PlaceKeyword;
 import com.dalc.one.domain.User;
+import com.dalc.one.domain.UserKeyword;
 import com.dalc.one.domain.UserLikeCourse;
 import com.dalc.one.domain.UserLikePlace;
 import com.dalc.one.domain.UserSearchPlace;
@@ -32,6 +34,8 @@ public interface LehgoFacade {
 	void deleteUser(String userId);
 	void resetPw(User user);
 	
+	/* User Keyword */
+	UserKeyword getUserKeyword(@Valid User user);
 	
 	//Place
 	Place getPlace(int id);
@@ -50,6 +54,9 @@ public interface LehgoFacade {
 	int deleteUserVisitedPlace(@Valid User user, int id) throws DataAccessException;
 	/* UserPlace */
 	Place addPlace(Place place);	
+	/* AI Place*/
+	List<PlaceKeyword> getAiPlaceList(int keyword);
+
 
 	/* Folder */
 	Folder addFolder(@Valid User user, String folder) throws DataAccessException;
@@ -57,11 +64,13 @@ public interface LehgoFacade {
 	List<Folder> getFolderList(String userId);
 	Folder getFolder(int id);
 	Folder updateFolder(Folder newFolder, String name);
+	
 	/* Folder Place */
 	FolderPlace addFolderPlace(int folderId, int placeId);
 	List<FolderPlace> getFolderPlaceList(int folderId);
 	int deleteFolderPlace(int folderId, int placeId);
-	
+	Boolean isInMyFolder(String userId, int placeId);
+
 
 	/* Course */
 	List<Course> getCourseList(String userId);

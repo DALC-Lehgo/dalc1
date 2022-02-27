@@ -13,5 +13,4 @@ public interface FolderPlaceRepository extends CrudRepository<FolderPlace, Long>
 	int deleteByFolderIdAndPlaceId(int folderId, int placeId);
 
 	int deleteByFolderId(int folderId);
-
 }
